@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+ <title>Apple Native Web SaaS · 通用设计示例</title>
+ <style>/* Apple Native Web SaaS — reusable polished macOS-inspired visual system and restrained motion.
+   Domain-neutral implementation. No external fonts, icons, or network calls. */
+:root{
+ --an-ink:#2d3542;--an-text-2:#5d6777;--an-text-3:#788394;--an-blue:#007aff;
+ --an-red:#e05e59;--an-amber:#dca149;--an-soft-blue:#6d9ed4;--an-gray:#bfc7d2;
+ --an-line:#e4e9f1;--an-canvas:#fff;--an-sidebar-width:236px;
+ --an-sidebar-bg:linear-gradient(155deg,rgba(246,248,252,.98),rgba(235,239,247,.96) 62%,rgba(232,237,246,.97));
+ --an-shadow:0 3px 14px rgba(28,45,78,.048),0 1px 3px rgba(36,52,84,.032);
+ --an-focus:0 0 0 3px rgba(0,122,255,.16);
+ --an-overview-max:1440px;--an-data-max:1680px;--an-gutter:36px;--an-data-gutter:38px;
+ --motion-ease:cubic-bezier(.22,1,.36,1);--motion-short:155ms;--motion-normal:230ms;--motion-panel:315ms;
+ --an-font:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','PingFang SC','Helvetica Neue',Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;color:var(--an-ink);font:13.5px/1.55 var(--an-font);-webkit-font-smoothing:antialiased;background:white}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid rgba(0,122,255,.65);outline-offset:2px}
+button:disabled{opacity:.42;cursor:not-allowed}
+[hidden]{display:none!important}
+.an-app{width:100%;height:100dvh;display:flex;min-width:0;overflow:hidden;background:#fff}
+.an-sidebar{width:var(--an-sidebar-width);flex:0 0 var(--an-sidebar-width);min-width:0;display:flex;flex-direction:column;gap:0;min-height:0;background:var(--an-sidebar-bg);border-right:1px solid #dce2eb;box-shadow:inset -1px 0 rgba(255,255,255,.6);padding:0 11px 13px;position:relative;z-index:6;transition:width var(--motion-normal) var(--motion-ease),flex-basis var(--motion-normal) var(--motion-ease)}
+.an-brand{height:67px;min-height:67px;display:flex;align-items:center;gap:10px;padding:0 19px;margin:0 -11px 20px;border-bottom:1px solid #dfe5ed;white-space:nowrap;overflow:hidden}
+.an-brand-mark{width:34px;height:34px;border-radius:10px;flex:none;background:linear-gradient(145deg,#354763,#1b283e);box-shadow:inset 0 1px 1px #ffffff4d,0 3px 8px #1d2d4930;display:grid;place-items:center;color:#fff;font-size:19px;font-weight:700}
+.an-brand-name{font-size:15px;letter-spacing:-.3px;font-weight:700;color:#253345;line-height:1.2}
+.an-brand-sub{font-size:11.5px;color:#68798c;line-height:1.2;margin-top:4px}
+.an-sidebar-content{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin}
+.an-nav-group{margin-bottom:22px}.an-nav-heading{margin:0 0 7px;padding:0 11px;font-size:11px;font-weight:670;color:#728095;letter-spacing:.2px}
+.an-nav-link{width:100%;border:0;border-radius:8px;background:transparent;min-height:37px;display:flex;align-items:center;gap:11px;padding:0 11px;margin:1px 0;color:#4f6073;font-weight:530;font-size:13px;text-align:left;transition:background-color var(--motion-short) ease,color var(--motion-short) ease;white-space:nowrap;overflow:hidden}
+.an-nav-link:hover:not(.active){background:rgba(77,109,158,.085)}
+.an-nav-link.active{color:#1763bd;background:linear-gradient(105deg,rgba(0,116,255,.135),rgba(62,140,234,.09));box-shadow:inset 0 0 0 1px rgba(47,121,222,.065),0 1px 2px rgba(44,108,207,.04);font-weight:670}
+.an-nav-link svg{width:17px;height:17px;flex:none;stroke-width:1.7;opacity:.85}.an-nav-link.active svg{opacity:1}
+.an-nav-count{margin-left:auto;font-size:11px;padding:0 5px;border-radius:4px;background:#e2e5ed;color:#617086}
+.an-account{border-top:1px solid #d5dde8;margin:5px 0 0;padding:15px 7px 0;display:flex;align-items:center;gap:9px;white-space:nowrap;overflow:hidden}
+.an-account-badge{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#b3a1d8,#8178b3);color:white;font-weight:700}.an-account-name{font-size:12.5px;font-weight:680}.an-account-role{font-size:11px;color:#68798c}
+.an-main{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;background:#fff}
+.an-toolbar{min-height:67px;height:67px;display:flex;align-items:center;gap:12px;flex:none;padding:0 35px 0 23px;background:linear-gradient(180deg,rgba(255,255,255,.99),rgba(251,252,254,.99));border-bottom:1px solid #e1e7ef;box-shadow:0 1px 2px rgba(35,54,83,.033);z-index:4}
+.an-toolbar-title{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:670;color:#303e51;white-space:nowrap}
+.an-toolbar-spacer{flex:1}
+.an-toolbar-search{background:#f6f8fb;border:1px solid #e5e9f1;border-radius:8px;min-height:33px;padding:0 11px;display:flex;align-items:center;gap:8px;color:#77859a;font-size:12px;white-space:nowrap}
+.an-kbd{border:1px solid #e9edf3;border-radius:4px;background:white;font-size:10px;padding:1px 4px;color:#8a94a3;box-shadow:0 1px 1px #1729410b}
+.an-icon-btn{width:33px;height:33px;min-width:33px;display:grid;place-items:center;border:1px solid transparent;background:transparent;color:#708096;border-radius:8px;transition:background-color var(--motion-short) ease,border-color var(--motion-short) ease,color var(--motion-short) ease}.an-icon-btn:hover{background:#eef2f8;border-color:#e4eaf2;color:#3577bb}
+.an-icon-btn svg{width:17px;height:17px;stroke-width:1.7}
+.an-content{overflow:auto;flex:1;min-height:0;background:linear-gradient(180deg,#fff 0%,#fefeff 76%,#fcfdff 100%)}
+.an-content-inner{width:100%;max-width:var(--an-overview-max);padding:34px var(--an-gutter) 52px;margin-inline:auto}
+.an-content-inner[data-layout='data']{max-width:var(--an-data-max);padding-inline:var(--an-data-gutter)}
+.an-eyebrow{font-size:11.5px;color:#737e8e;letter-spacing:.15px}
+.an-page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin:0 0 18px}
+.an-page-heading h1{font-size:30px;letter-spacing:-.85px;font-weight:710;line-height:1.25;margin:5px 0 4px;color:#202631}
+.an-page-heading p{font-size:12.5px;color:#677283;line-height:1.55;margin:0}
+.an-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.an-btn{height:33px;min-height:33px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #dbe1e9;border-radius:8px;background:linear-gradient(#fff,#fbfcff);box-shadow:0 1px 1px rgba(23,43,71,.04),inset 0 1px rgba(255,255,255,.88);color:#47556a;font-size:12.5px;font-weight:610;white-space:nowrap;transition:background var(--motion-short) ease,color var(--motion-short) ease,box-shadow var(--motion-short) ease,transform var(--motion-short) ease}
+.an-btn:hover{background:#f6f9ff;box-shadow:0 1px 5px rgba(35,55,89,.09)}.an-btn:active:not(:disabled){transform:translateY(1px)}
+.an-btn.primary{border-color:#1279e9;background:linear-gradient(#218cff,#0877eb);color:#fff;box-shadow:inset 0 1px rgba(255,255,255,.25),0 2px 5px rgba(0,99,208,.14)}.an-btn.primary:hover{background:linear-gradient(#288dff,#006fe3)}
+.an-btn.ghost{border-color:transparent;background:transparent;box-shadow:none;color:#657489}.an-btn.ghost:hover{background:#f3f6fb}
+.an-btn svg{width:14px;height:14px}
+.an-segment{display:inline-flex;position:relative;isolation:isolate;align-items:center;gap:0;padding:3px;height:34px;border-radius:8px;background:#f0f1f5;border:1px solid #e6e9ef;overflow:hidden}
+.an-segment-thumb{position:absolute;top:3px;left:0;height:26px;width:0;background:white;box-shadow:0 1px 3px #00000020,0 0 0 .5px #00000013;border-radius:5px;z-index:0;pointer-events:none;transition:transform var(--motion-normal) var(--motion-ease),width var(--motion-normal) var(--motion-ease)}
+.an-segment button{position:relative;z-index:1;height:26px;padding:0 12px;background:transparent;border:0;border-radius:5px;color:#728095;font-size:12px;font-weight:600;white-space:nowrap;transition:color var(--motion-short) ease}.an-segment button.active{color:#25364e}
+.an-filter-select{height:33px;border-radius:7px;border:1px solid #e2e7ef;background:#fff;padding:0 10px;color:#526176;font-size:12px;max-width:100%}
+.an-overview-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 16px;flex-wrap:wrap}
+.an-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.an-metric{border:1px solid #ebedf4;border-radius:10px;background:linear-gradient(158deg,#fbfbfd 0%,#f7f8fb 100%);box-shadow:inset 0 1px rgba(255,255,255,.95),0 2px 10px rgba(31,49,84,.038),0 1px 2px rgba(30,46,78,.035);min-width:0;padding:16px 16px 14px}
+.an-metric-label{font-size:12.5px;color:#647183;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.an-metric-value{font-size:26px;font-weight:730;line-height:1.35;letter-spacing:-.7px;margin:6px 0 4px;font-variant-numeric:tabular-nums}
+.an-metric-context{font-size:11.5px;color:#728091}
+.an-analytics{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(280px,1fr);gap:12px;margin-bottom:16px}
+.an-panel{background:#fff;border:1px solid #e3e8ef;border-radius:10px;box-shadow:var(--an-shadow);min-width:0;overflow:hidden}
+.an-panel-pad{padding:21px 23px}
+.an-section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.an-section-heading h2{font-size:14px;font-weight:700;color:#313946;margin:0 0 4px}
+.an-section-heading p{font-size:12px;line-height:1.5;color:#6d7888;margin:0}
+.an-muted{color:var(--an-text-3);font-size:11.5px}
+.an-chart{width:100%;height:255px;position:relative;overflow:visible}
+.an-chart svg{width:100%;height:100%;overflow:visible;display:block}
+.an-chart-grid{stroke:#e9edf3;stroke-width:1}
+.an-chart-tooltip{position:absolute;left:0;top:0;padding:8px 11px;border-radius:9px;background:rgba(31,39,54,.95);color:white;box-shadow:0 8px 25px rgba(24,39,60,.22);font-size:12px;line-height:1.6;opacity:0;pointer-events:none;transform:translateY(4px);transition:opacity 110ms ease,transform var(--motion-short) ease;white-space:nowrap}
+.an-chart-tooltip.show{opacity:1;transform:translateY(0)}
+.an-chart-legend{display:flex;gap:14px;font-size:11.5px;color:#677587;align-items:center}
+.an-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.an-distribution-total{font-size:24px;letter-spacing:-.5px;font-weight:750;margin:5px 0 14px;font-variant-numeric:tabular-nums}
+.an-distribution-bar{height:9px;width:100%;display:flex;border-radius:6px;background:#f0f2f5;overflow:hidden;margin:0 0 16px}
+.an-distribution-bar span{height:100%}
+.an-distribution-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;font-size:12px;margin:11px 0;color:#566479}
+.an-distribution-row b{font-variant-numeric:tabular-nums;color:#364358}
+.an-distribution-row em{font-size:11px;font-style:normal;color:#8a94a3;width:48px;text-align:right}
+.an-panel-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 20px 12px;flex-wrap:wrap}
+.an-table-scroll{width:100%;overflow:auto}
+.an-table{width:100%;border-collapse:collapse;text-align:left;font-size:12.7px;min-width:680px}
+.an-table thead{background:linear-gradient(180deg,#f9fafc,#f7f8fa)}
+.an-table th{height:39px;padding:8px 16px;font-size:11.5px;font-weight:660;color:#627084;border-bottom:1px solid #e5eaf1;white-space:nowrap;letter-spacing:.01em}
+.an-table td{height:53px;padding:10px 16px;color:#445062;line-height:1.5;border-bottom:1px solid #edf0f4;vertical-align:middle}
+.an-table tbody tr{transition:background-color var(--motion-short) ease;cursor:pointer}
+.an-table tbody tr:hover{background:#f5f9ff}.an-table tbody tr.selected{background:#eaf3ff}.an-table tbody tr.selected:hover{background:#e5f0ff}
+.an-table tbody tr:focus-visible{outline:2px solid rgba(0,122,255,.42);outline-offset:-2px;background:#eef5ff}
+.an-table .primary-cell{font-weight:640;color:#283647;font-size:12.9px}.an-table .secondary-cell{color:#68778a;font-size:11.7px}
+.an-status{font-size:11px;font-weight:650;display:inline-flex;align-items:center;padding:3px 7px;border-radius:6px;white-space:nowrap}
+.an-status.high{color:#bd4e4b;background:#fcefee}.an-status.mid{color:#aa7932;background:#fdf5e8}.an-status.low{color:#3372ad;background:#eef5fd}.an-status.neutral{color:#6c7583;background:#f0f2f5}
+.an-row-action{color:#0877ea;background:transparent;border:0;font-size:12px;font-weight:630;padding:5px 6px;border-radius:5px}.an-row-action:hover{background:#e6f2ff}
+.an-panel-footer{min-height:40px;padding:9px 16px;display:flex;justify-content:space-between;gap:12px;color:#8490a1;font-size:11px}
+.an-filterbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.an-filterbar input{height:34px;border:1px solid #e2e7ef;border-radius:8px;background:#fff;padding:0 12px;color:#37465b;min-width:200px;flex:1 1 260px;max-width:370px;font-size:12.5px}
+.an-split{display:grid;grid-template-columns:280px minmax(0,1fr);gap:12px}
+.an-split-nav{padding:15px;display:flex;flex-direction:column;gap:5px}
+.an-split-item{display:block;width:100%;text-align:left;border:1px solid transparent;border-radius:9px;background:transparent;padding:10px 11px;color:#4e5b6b;transition:background var(--motion-normal) ease,border-color var(--motion-normal) ease}
+.an-split-item:hover{background:#f5f8fc}.an-split-item.active{background:#ecf4ff;border-color:#d9e8f9}
+.an-split-item strong{display:block;font-size:12.5px}.an-split-item small{display:block;font-size:11.5px;margin-top:4px;color:#7c8898}
+.an-popover{position:absolute;right:12px;top:48px;min-width:230px;z-index:30;border-radius:11px;background:#fff;border:1px solid #e5eaf0;box-shadow:0 13px 38px rgba(34,49,78,.16),0 2px 6px #1a2f5012;padding:11px;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-5px) scale(.982);transform-origin:90% 0;transition:opacity var(--motion-short) ease,transform var(--motion-normal) var(--motion-ease),visibility var(--motion-normal)}
+.an-popover.show{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.an-popover button{display:block;width:100%;padding:9px;text-align:left;background:transparent;border:0;border-radius:7px;color:#445268}.an-popover button:hover{background:#eef4fd}
+.an-scrim{position:fixed;inset:0;background:rgba(23,35,52,.24);z-index:29;visibility:hidden;opacity:0;pointer-events:none;transition:opacity var(--motion-normal) ease,visibility var(--motion-normal) ease}
+.an-scrim.show{visibility:visible;opacity:1;pointer-events:auto}
+.an-drawer{position:fixed;right:0;top:0;bottom:0;width:min(480px,100vw);background:#fff;box-shadow:-17px 0 42px rgba(25,40,70,.17);z-index:30;transform:translateX(105%);transition:transform var(--motion-panel) var(--motion-ease);display:flex;flex-direction:column}
+.an-drawer.show{transform:translateX(0)}
+.an-drawer-header{height:66px;padding:0 22px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #e5eaf0;font-size:15px;font-weight:680}
+.an-drawer-body{overflow:auto;padding:24px;flex:1;color:#526074;font-size:13px;line-height:1.8}
+.an-drawer-body strong{color:#2b3749}
+.an-toast{position:fixed;bottom:22px;right:22px;z-index:40;background:#263448;color:white;border-radius:10px;padding:10px 15px;box-shadow:0 11px 24px #26344836;font-size:12.5px;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity var(--motion-normal) ease,transform var(--motion-normal) var(--motion-ease)}
+.an-toast.show{opacity:1;transform:translateY(0)}
+.an-updating{animation:an-highlight .55s var(--motion-ease)}
+@keyframes an-highlight{0%{box-shadow:0 0 0 3px rgba(0,122,255,.12),var(--an-shadow)}100%{box-shadow:var(--an-shadow)}}
+.an-empty{padding:52px 18px;text-align:center;color:#788496;font-size:13px}
+.an-sidebar-shade{display:none}
+.an-app.compact .an-sidebar{width:65px;flex-basis:65px;padding-inline:7px}
+.an-app.compact .an-brand{margin-inline:-7px;padding-inline:15px;justify-content:center}
+.an-app.compact .an-brand-text,.an-app.compact .an-nav-heading,.an-app.compact .an-nav-link span,.an-app.compact .an-account-copy,.an-app.compact .an-nav-count{display:none}
+.an-app.compact .an-nav-link{justify-content:center;padding:0;height:41px}.an-app.compact .an-nav-link svg{width:19px;height:19px}
+.an-app.compact .an-account{justify-content:center}
+@media(min-width:2200px){:root{--an-overview-max:1480px;--an-gutter:40px;--an-data-gutter:42px}.an-chart{height:265px}}
+@media(max-width:1280px){:root{--an-gutter:30px;--an-data-gutter:30px}}
+@media(max-width:1100px){:root{--an-gutter:27px;--an-data-gutter:27px}.an-toolbar{padding-inline:18px}.an-sidebar{width:215px;flex-basis:215px}.an-content-inner{padding-block:29px 42px}.an-analytics{grid-template-columns:1fr 330px}}
+@media(max-width:960px){.an-analytics{grid-template-columns:1fr}.an-chart{height:225px}.an-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.an-toolbar-search span,.an-toolbar-search kbd{display:none}.an-toolbar-search{padding:0 10px}}
+@media(max-width:810px){:root{--an-gutter:21px;--an-data-gutter:21px}.an-sidebar{width:65px;flex-basis:65px;padding:0 7px 12px}.an-brand{margin:0 -7px 18px;padding:0 15px;height:60px;min-height:60px;justify-content:center}.an-brand-text,.an-nav-heading,.an-nav-link span,.an-nav-count,.an-account-copy{display:none}.an-nav-link{justify-content:center;padding:0;height:41px}.an-account{justify-content:center}.an-toolbar{height:60px;min-height:60px;padding-inline:17px}.an-content-inner{padding-block:26px 36px}.an-app.mobile-open .an-sidebar{position:absolute;left:0;top:0;bottom:0;width:236px;flex-basis:236px;z-index:22;padding:0 11px 13px;box-shadow:12px 0 40px rgba(25,39,65,.20)}.an-app.mobile-open .an-brand{margin:0 -11px 18px;justify-content:flex-start;padding:0 19px}.an-app.mobile-open .an-brand-text,.an-app.mobile-open .an-nav-heading,.an-app.mobile-open .an-nav-link span,.an-app.mobile-open .an-account-copy{display:block}.an-app.mobile-open .an-nav-link{justify-content:flex-start;padding:0 11px;height:37px}.an-app.mobile-open .an-account{justify-content:flex-start}.an-app.mobile-open .an-sidebar-shade{display:block;position:fixed;inset:0;background:rgba(19,28,45,.22);z-index:21;border:0}}
+@media(max-width:620px){.an-page-heading{flex-direction:column}.an-split{grid-template-columns:1fr}.an-actions{width:100%}.an-panel-pad{padding:16px}.an-table{min-width:650px}}
+@media(max-width:550px){:root{--an-gutter:15px;--an-data-gutter:15px}.an-toolbar{padding-inline:11px;gap:7px}.an-toolbar-title{font-size:12px}.an-content-inner{padding-block:23px 35px}.an-metrics{gap:8px}.an-metric{padding:12px}.an-metric-value{font-size:21px}.an-analytics{gap:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* Complementary reusable controls — neutral, domain-independent. */
+.an-field{display:flex;flex-direction:column;gap:6px;min-width:0}.an-field-label{font-size:12px;font-weight:650;color:#4a586b}.an-field-hint{font-size:11.5px;color:#738092}
+.an-input,.an-textarea{width:100%;border:1px solid #dfe5ed;border-radius:8px;padding:8px 11px;color:var(--an-ink);background:linear-gradient(#fff,#fefeff);box-shadow:inset 0 1px 2px rgba(35,49,76,.024);font-size:13px;outline:none;transition:border-color var(--motion-short) ease,box-shadow var(--motion-short) ease}
+.an-input{height:36px}.an-textarea{min-height:90px;resize:vertical}.an-input:hover,.an-textarea:hover{border-color:#cbd5e2}.an-input:focus,.an-textarea:focus{border-color:#69a3f1;box-shadow:var(--an-focus)}.an-input[aria-invalid="true"]{border-color:#d76a64}
+.an-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.an-form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.an-checkbox{display:inline-flex;gap:9px;align-items:center;font-size:12.5px;color:#4e5e72}.an-checkbox input{accent-color:var(--an-blue);height:16px;width:16px}
+.an-switch{appearance:none;position:relative;width:36px;height:21px;border-radius:999px;border:1px solid #cad3df;background:#d9e0e9;transition:background var(--motion-short) ease;vertical-align:middle;cursor:pointer}.an-switch:after{content:"";position:absolute;left:2px;top:2px;width:15px;height:15px;border-radius:50%;background:white;box-shadow:0 1px 3px #0003;transition:transform var(--motion-normal) var(--motion-ease)}.an-switch:checked{background:#1784f6;border-color:#1784f6}.an-switch:checked:after{transform:translateX(15px)}
+.an-overlay{position:fixed;inset:0;z-index:49;background:rgba(25,38,59,.28);display:grid;place-items:center;padding:22px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--motion-normal) ease,visibility var(--motion-normal) ease}.an-overlay.show{opacity:1;visibility:visible;pointer-events:auto}
+.an-dialog{width:min(460px,100%);background:#fff;border-radius:14px;border:1px solid #dfe5ed;box-shadow:0 22px 65px #182d4b3b,0 4px 15px #1b30482a;transform:translateY(8px) scale(.985);transition:transform var(--motion-panel) var(--motion-ease);padding:22px}.an-overlay.show .an-dialog{transform:none}.an-dialog h2{font-size:17px;letter-spacing:-.3px;margin:0 0 6px}.an-dialog p{font-size:12.5px;color:#657183;margin:0 0 18px}
+.an-skeleton{position:relative;overflow:hidden;background:#edf1f6;border-radius:6px;min-height:13px}.an-skeleton::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#ffffff9e,transparent);animation:an-shimmer 1.55s linear infinite;transform:translateX(-100%)}@keyframes an-shimmer{to{transform:translateX(100%)}}
+.an-notice{border:1px solid #dce6f0;border-radius:9px;background:#f7fbff;color:#46627f;padding:11px 13px;font-size:12.5px}.an-notice.error{border-color:#f0d6d3;background:#fff8f7;color:#9c514d}
+@media(max-width:640px){.an-form-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.an-skeleton::after{animation:none}}
+</style>
+</head>
+<body>
+<div class="an-app" id="app">
+ <aside class="an-sidebar" id="sidebar" aria-label="应用导航">
+  <div class="an-brand"><div class="an-brand-mark" aria-hidden="true">A</div><div class="an-brand-text"><div class="an-brand-name">Atlas Workspace</div><div class="an-brand-sub">Apple-inspired SaaS UI</div></div></div>
+  <div class="an-sidebar-content">
+   <div class="an-nav-group"><div class="an-nav-heading">工作区</div>
+    <button class="an-nav-link active" data-page="overview" title="工作台"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>工作台</span></button>
+    <button class="an-nav-link" data-page="records" title="任务列表"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><span>任务列表</span></button>
+    <button class="an-nav-link" data-page="monitor" title="进度追踪"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M2 13h4l3-7 5 12 3-5h5"/></svg><span>进度追踪</span></button>
+   </div>
+   <div class="an-nav-group"><div class="an-nav-heading">管理</div><button class="an-nav-link" id="settingsDemo" title="偏好设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.4-6.4-2.1 2.1m-8.6 8.6-2.1 2.1m12.8 0-2.1-2.1M7.7 7.7 5.6 5.6"/><circle cx="12" cy="12" r="4"/></svg><span>偏好设置</span></button></div>
+  </div>
+  <div class="an-account"><div class="an-account-badge">AT</div><div class="an-account-copy"><div class="an-account-name">演示账号</div><div class="an-account-role">设计样板 · 本地演示</div></div></div>
+ </aside>
+ <button class="an-sidebar-shade" id="sidebarShade" aria-label="关闭导航"></button>
+ <div class="an-main">
+  <div class="an-toolbar">
+   <button class="an-icon-btn" id="collapse" aria-label="展开或折叠侧边栏" title="展开或折叠侧边栏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
+   <div class="an-toolbar-title" id="toolbarTitle">▦ &nbsp;工作台</div><div class="an-toolbar-spacer"></div>
+   <button class="an-toolbar-search" id="globalSearch"><span>⌕ &nbsp;搜索项目和任务</span><kbd class="an-kbd">⌘ K</kbd></button>
+   <div style="position:relative"><button class="an-icon-btn" id="moreBtn" aria-label="更多操作" aria-expanded="false" aria-controls="moreMenu"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button><div id="moreMenu" class="an-popover" role="menu"><button type="button" role="menuitem" data-demo="查看帮助">使用帮助</button><button type="button" role="menuitem" data-demo="已复制链接">复制示例链接</button><button type="button" role="menuitem" data-demo="已打开外观设置">外观设置</button></div></div>
+  </div>
+  <main class="an-content" id="scrollArea">
+   <section class="an-content-inner" data-layout="overview" id="page-overview">
+    <header class="an-page-heading"><div><div class="an-eyebrow">工作区 · 数据概览</div><h1>工作台</h1><p>聚焦正在发生的变化，快速定位需要处理的事项。</p></div><div class="an-actions"><button class="an-btn" id="overviewExport">导出概览</button><button class="an-btn primary" id="newRecord">＋ 新建任务</button></div></header>
+    <div class="an-overview-tools"><div class="an-segment" id="overviewSegment" role="tablist" aria-label="查看范围"><span class="an-segment-thumb" aria-hidden="true"></span><button class="active" data-mode="week" role="tab" aria-selected="true">本周概览</button><button data-mode="month" role="tab" aria-selected="false">本月概览</button></div><label class="an-muted">统计范围 &nbsp;<select class="an-filter-select" id="overviewPeriod"><option>2026 年 9 月</option><option>2026 年 8 月</option><option>2026 年 7 月</option></select></label></div>
+    <div class="an-metrics" id="overviewMetrics"><article class="an-metric"><div class="an-metric-label">累计项目数 <span>▦</span></div><div class="an-metric-value" data-value="1526">1,526</div><div class="an-metric-context">较上期 <span style="color:#23936b">↑ 12.6%</span></div></article><article class="an-metric"><div class="an-metric-label">待关注事项 <span>△</span></div><div class="an-metric-value" style="color:var(--an-red)" data-value="48">48</div><div class="an-metric-context">需优先处理</div></article><article class="an-metric"><div class="an-metric-label">进行中 <span>⌁</span></div><div class="an-metric-value" style="color:#b5853d" data-value="312">312</div><div class="an-metric-context">按期推进</div></article><article class="an-metric"><div class="an-metric-label">已完成 <span>⌁</span></div><div class="an-metric-value" style="color:#387ab7" data-value="1166">1,166</div><div class="an-metric-context">持续交付</div></article></div>
+    <div class="an-analytics">
+     <section class="an-panel an-panel-pad"><div class="an-section-heading"><div><h2>活动趋势</h2><p>新增任务与已完成任务 · 最近六期</p></div><div class="an-chart-legend"><span><i class="an-dot" style="background:#e05e59"></i>新增</span><span><i class="an-dot" style="background:#dca149"></i>完成</span></div></div><div class="an-chart" id="chartArea" tabindex="0" role="img" aria-label="近六期新增与完成任务趋势，可左右方向键查看各期数值"><svg viewBox="0 0 680 255" preserveAspectRatio="none" aria-hidden="true"><g id="chartGrid"></g><path id="chartLineA" stroke="#e05e59" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><path id="chartLineB" stroke="#dca149" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><g id="chartPoints"></g></svg><div class="an-chart-tooltip" id="chartTooltip" role="status"></div></div><div class="an-muted">演示曲线 · 使用稳定的本地模拟数据</div></section>
+     <section class="an-panel an-panel-pad"><div class="an-section-heading"><div><h2>项目状态分布</h2><p>2026 年 9 月 · 最新统计快照</p></div></div><div class="an-distribution-total">1,526</div><div class="an-distribution-bar"><span style="width:3.1%;background:var(--an-red)"></span><span style="width:20.4%;background:var(--an-amber)"></span><span style="width:28.2%;background:var(--an-soft-blue)"></span><span style="width:48.3%;background:var(--an-gray)"></span></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-red)"></i>待关注</span><b>48</b><em>3.1%</em></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-amber)"></i>进行中</span><b>312</b><em>20.4%</em></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-soft-blue)"></i>待确认</span><b>430</b><em>28.2%</em></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-gray)"></i>已归档</span><b>736</b><em>48.3%</em></div><div class="an-muted" style="border-top:1px solid var(--an-line);padding-top:12px;margin-top:15px">全量快照示例；字段与统计可根据目标业务替换。</div></section>
+    </div>
+    <section class="an-panel"><div class="an-panel-toolbar"><div><div class="an-section-heading" style="margin:0"><div><h2>近期需处理事项</h2><p>选择一条记录打开详情</p></div></div></div><button class="an-btn ghost" id="allRecords">查看全部 →</button></div><div class="an-table-scroll"><table class="an-table"><thead><tr><th style="width:58px">序号</th><th>任务 / 项目</th><th>负责人</th><th>优先级</th><th>操作</th></tr></thead><tbody id="overviewRows"></tbody></table></div><div class="an-panel-footer"><span>数据均为演示数据</span><span>共 4 条近期事项</span></div></section>
+   </section>
+   <section class="an-content-inner" data-layout="data" id="page-records" hidden>
+    <header class="an-page-heading"><div><div class="an-eyebrow">工作区 · 任务管理</div><h1>任务列表</h1><p>集中检索、筛选和处理任务，保留高效的数据表格布局。</p></div><div class="an-actions"><button class="an-btn" id="recordsExport">导出列表</button><button class="an-btn primary" id="addRecord">＋ 新建任务</button></div></header>
+    <div class="an-filterbar"><input id="recordSearch" placeholder="搜索任务名称或负责人" aria-label="搜索任务名称或负责人"><select class="an-filter-select" id="recordFilter" aria-label="筛选任务状态"><option value="all">全部状态</option><option value="关注">待关注</option><option value="进行">进行中</option><option value="完成">已完成</option></select><button class="an-btn" id="resetFilter">重置筛选</button></div>
+    <section class="an-panel"><div class="an-panel-toolbar"><div class="an-section-heading" style="margin:0"><div><h2>任务记录</h2><p>Hover、选中态、键盘操作及详情抽屉示例</p></div></div><span class="an-muted" id="recordCount">共 0 条</span></div><div class="an-table-scroll"><table class="an-table"><thead><tr><th>任务名称</th><th>负责人</th><th>更新日期</th><th>状态</th><th>操作</th></tr></thead><tbody id="recordRows"></tbody></table></div><div class="an-panel-footer"><span>上下方向键切换行，Enter 查看详情</span><span>通用演示数据</span></div></section>
+   </section>
+   <section class="an-content-inner" data-layout="data" id="page-monitor" hidden>
+    <header class="an-page-heading"><div><div class="an-eyebrow">工作区 · 运行情况</div><h1>进度追踪</h1><p>从任务变化出发，快速定位当前需要关注的任务。</p></div><div class="an-actions"><label class="an-muted">统计月份 &nbsp;<select class="an-filter-select" id="monitorMonth"><option value="9">2026 年 9 月</option><option value="8">2026 年 8 月</option><option value="7">2026 年 7 月</option></select></label><button class="an-btn" id="monitorExport">导出结果</button></div></header>
+    <div class="an-metrics" id="monitorMetrics"></div><section class="an-panel"><div class="an-panel-toolbar"><div class="an-section-heading" style="margin:0"><div><h2>本月重点事项</h2><p>月份切换后局部更新，不重载整页</p></div></div><span class="an-muted">筛选结果为当前月份</span></div><div class="an-table-scroll"><table class="an-table"><thead><tr><th>事项</th><th>当前状态</th><th>较上期变化</th><th>负责人</th><th>操作</th></tr></thead><tbody id="monitorRows"></tbody></table></div></section>
+   </section>
+  </main>
+ </div>
+</div>
+<div class="an-scrim" id="drawerScrim"></div><aside class="an-drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true"><div class="an-drawer-header"><span id="drawerTitle">详情</span><button class="an-icon-btn" id="drawerClose" aria-label="关闭详情">×</button></div><div class="an-drawer-body" id="drawerBody"></div></aside>
+<div class="an-toast" id="toast" role="status" aria-live="polite"></div>
+<script>/* Domain-neutral, dependency-free interaction sampler (not a banking application). */
+(()=>{'use strict';
+const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s)];
+const reduceMotion=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const activeTweens=new WeakMap();
+const state={page:'overview',mode:'week',selected:-1,chartIndex:5,openDrawerFrom:null};
+const records=[
+ {id:'PRJ-001',name:'升级客户资料管理流程',owner:'林禾',date:'2026-09-28',status:'关注',note:'需要进一步确认当前流程中的审批节点与职责划分。'},
+ {id:'PRJ-002',name:'统一跨部门文档模板',owner:'陈一',date:'2026-09-25',status:'进行',note:'模板已进入试用阶段，正在收集反馈。'},
+ {id:'PRJ-003',name:'改善移动端表单体验',owner:'宋云',date:'2026-09-23',status:'完成',note:'移动端组件已完成可用性检查。'},
+ {id:'PRJ-004',name:'优化月度数据汇总展示',owner:'吴宁',date:'2026-09-21',status:'关注',note:'正在校对跨月份数据来源。'},
+ {id:'PRJ-005',name:'完善任务通知体系',owner:'方清',date:'2026-09-19',status:'进行',note:'通知规则尚在内部审查。'},
+ {id:'PRJ-006',name:'审查产品帮助中心导航',owner:'陆川',date:'2026-09-16',status:'完成',note:'信息层级已完成首轮审核。'}
+];
+const statusCls=s=>s==='关注'?'high':s==='进行'?'mid':'low';
+const statusName=s=>s==='关注'?'待关注':s==='进行'?'进行中':'已完成';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let toastTimeout=null;
+function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>el.classList.remove('show'),2400)}
+function selectPage(page){state.page=page;$$('[data-page]').forEach(b=>{let on=b.dataset.page===page;b.classList.toggle('active',on);b.setAttribute('aria-current',on?'page':'false')});$$('.an-content-inner[id^="page-"]').forEach(s=>s.hidden=s.id!=='page-'+page);$('#toolbarTitle').textContent='▦   '+({overview:'工作台',records:'任务列表',monitor:'进度追踪'}[page]||'工作台');$('#scrollArea').scrollTop=0;$('#app').classList.remove('mobile-open');closePopover();if(page==='overview'){requestAnimationFrame(placeSegment);drawChart()}if(page==='records')renderRecords();if(page==='monitor')renderMonitor()}
+function toggleSidebar(){if(innerWidth<=810){$('#app').classList.toggle('mobile-open')}else{$('#app').classList.toggle('compact')} }
+function placeSegment(){const track=$('#overviewSegment');const active=track.querySelector('button.active');const thumb=track.querySelector('.an-segment-thumb');if(!active)return;const x=active.getBoundingClientRect().left-track.getBoundingClientRect().left;thumb.style.width=active.getBoundingClientRect().width+'px';thumb.style.transform='translateX('+x+'px)'}
+function tweenValue(el,to){let old=Number(el.dataset.value||0);el.dataset.value=String(to);if(activeTweens.has(el))cancelAnimationFrame(activeTweens.get(el));if(reduceMotion()){el.textContent=to.toLocaleString('zh-CN');return}const start=performance.now(),dur=420;const tick=now=>{const t=Math.min(1,(now-start)/dur);let k=1-Math.pow(1-t,3);el.textContent=Math.round(old+(to-old)*k).toLocaleString('zh-CN');if(t<1)activeTweens.set(el,requestAnimationFrame(tick));else activeTweens.delete(el)};activeTweens.set(el,requestAnimationFrame(tick))}
+const points={week:{a:[45,52,48,60,69,82],b:[70,73,80,86,94,107]},month:{a:[68,75,70,91,112,131],b:[92,105,123,135,151,176]}};
+function drawChart(){const data=points[state.mode];const svgGrid=$('#chartGrid');svgGrid.innerHTML='';for(let i=0;i<4;i++){const y=28+i*54;const line=document.createElementNS('http://www.w3.org/2000/svg','line');line.setAttribute('x1','36');line.setAttribute('x2','666');line.setAttribute('y1',y);line.setAttribute('y2',y);line.setAttribute('class','an-chart-grid');svgGrid.append(line)}for(let i=0;i<6;i++){const label=document.createElementNS('http://www.w3.org/2000/svg','text');label.setAttribute('x',36+i*124);label.setAttribute('y',244);label.setAttribute('font-size','11');label.setAttribute('fill','#9099a9');label.setAttribute('text-anchor','middle');label.textContent=['04月','05月','06月','07月','08月','09月'][i];svgGrid.append(label)}
+ const mk=arr=>arr.map((v,i)=>[36+i*124,220-v*1.04]);const coordsA=mk(data.a),coordsB=mk(data.b),path=arr=>arr.map(([x,y],i)=>(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)).join(' ');$('#chartLineA').setAttribute('d',path(coordsA));$('#chartLineB').setAttribute('d',path(coordsB));if(!reduceMotion()&&state.chartIndex===5){for(const el of [$('#chartLineA'),$('#chartLineB')]){el.getAnimations().forEach(a=>a.cancel());const len=el.getTotalLength();el.animate([{strokeDasharray:len,strokeDashoffset:len},{strokeDasharray:len,strokeDashoffset:0}],{duration:420,easing:'cubic-bezier(.22,1,.36,1)'});}}const group=$('#chartPoints');group.innerHTML='';const idx=state.chartIndex;for(const [coords,color] of [[coordsA,'#e05e59'],[coordsB,'#dca149']]){const [x,y]=coords[idx];const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r','4');c.setAttribute('fill','#fff');c.setAttribute('stroke',color);c.setAttribute('stroke-width','2.3');group.append(c)}
+ const tip=$('#chartTooltip');tip.innerHTML='第 '+(idx+1)+' 期<br>新增：'+data.a[idx]+'<br>完成：'+data.b[idx];const area=$('#chartArea');tip.style.left=Math.min(Math.max(coordsA[idx][0]/680*area.clientWidth-65,0),Math.max(0,area.clientWidth-116))+'px';tip.style.top='10px';}
+function chartHover(e){const area=$('#chartArea'),r=area.getBoundingClientRect();state.chartIndex=Math.min(5,Math.max(0,Math.round(((e.clientX-r.left)/Math.max(1,r.width)*680-36)/124)));drawChart();$('#chartTooltip').classList.add('show')}
+function chartKey(e){if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();state.chartIndex=Math.max(0,Math.min(5,state.chartIndex+(e.key==='ArrowRight'?1:-1)));drawChart();$('#chartTooltip').classList.add('show')}}
+function rowMarkup(r,i,short=false){return `<tr tabindex="0" data-record="${esc(r.id)}" class="${state.selected===i?'selected':''}"><td><div class="primary-cell">${esc(r.name)}</div>${short?'':`<div class="secondary-cell">${esc(r.id)}</div>`}</td><td>${esc(r.owner)}</td>${short?'':`<td>${esc(r.date)}</td>`}<td><span class="an-status ${statusCls(r.status)}">${statusName(r.status)}</span></td><td><button class="an-row-action" type="button" data-detail="${esc(r.id)}">查看详情 →</button></td></tr>`}
+function renderOverviewRows(){$('#overviewRows').innerHTML=records.slice(0,4).map((r,i)=>`<tr tabindex="0" data-record="${esc(r.id)}"><td style="color:#9ba3af">0${i+1}</td><td class="primary-cell">${esc(r.name)}</td><td>${esc(r.owner)}</td><td><span class="an-status ${statusCls(r.status)}">${statusName(r.status)}</span></td><td><button class="an-row-action" type="button" data-detail="${esc(r.id)}">查看 →</button></td></tr>`).join('')}
+function filtered(){let s=$('#recordSearch').value.trim().toLowerCase(),f=$('#recordFilter').value;return records.filter(r=>(!s||r.name.toLowerCase().includes(s)||r.owner.toLowerCase().includes(s))&&(f==='all'||r.status===f))}
+function renderRecords(){let list=filtered();$('#recordCount').textContent='共 '+list.length+' 条';$('#recordRows').innerHTML=list.length?list.map((r,i)=>rowMarkup(r,i)).join(''):`<tr><td colspan="5"><div class="an-empty">没有符合当前筛选条件的记录，请调整或重置筛选。</div></td></tr>`}
+function showDrawer(id,trigger){let r=records.find(x=>x.id===id);if(!r)return;state.openDrawerFrom=trigger||document.activeElement;$('#drawerTitle').textContent='任务详情 · '+r.id;$('#drawerBody').innerHTML=`<h2 style="color:#283647;margin-top:0">${esc(r.name)}</h2><p><strong>负责人：</strong>${esc(r.owner)}</p><p><strong>更新日期：</strong>${esc(r.date)}</p><p><strong>当前状态：</strong><span class="an-status ${statusCls(r.status)}">${statusName(r.status)}</span></p><div style="padding:14px 16px;border:1px solid #e4e9f1;border-radius:9px;background:#fafbfd"><strong>概要说明</strong><p>${esc(r.note)}</p></div><p class="an-muted">本页面仅演示 Apple Native UI 的抽屉和状态管理，不涉及真实业务流程。</p>`;$('#drawerScrim').classList.add('show');$('#drawer').classList.add('show');$('#drawer').setAttribute('aria-hidden','false');$('#drawerClose').focus()}
+function closeDrawer(){if(!$('#drawer').classList.contains('show'))return;$('#drawerScrim').classList.remove('show');$('#drawer').classList.remove('show');$('#drawer').setAttribute('aria-hidden','true');if(state.openDrawerFrom?.isConnected)state.openDrawerFrom.focus()}
+function closePopover(){const m=$('#moreMenu');m.classList.remove('show');$('#moreBtn').setAttribute('aria-expanded','false')}
+const monitorMonths={9:{counts:[1280,48,312,920],change:['增加 6%','需优先处理','较上月增加 4%','本月完成'],ids:['PRJ-001','PRJ-004','PRJ-005']},8:{counts:[1214,32,287,895],change:['增加 4%','需优先处理','较上月增加 3%','本月完成'],ids:['PRJ-002','PRJ-005','PRJ-003']},7:{counts:[1168,40,258,870],change:['增加 5%','需优先处理','较上月增加 1%','本月完成'],ids:['PRJ-004','PRJ-001','PRJ-006']}};
+function renderMonitor(){const m=monitorMonths[$('#monitorMonth').value]||monitorMonths[9],labels=['项目总数','待关注事项','进行中','本月完成'];let wrap=$('#monitorMetrics');if(!wrap.children.length){wrap.innerHTML=labels.map((label,i)=>`<article class="an-metric"><div class="an-metric-label">${label} <span>⌁</span></div><div class="an-metric-value" style="${i===1?'color:var(--an-red)':i===2?'color:#b5853d':''}" data-value="${m.counts[i]}">${m.counts[i].toLocaleString('zh-CN')}</div><div class="an-metric-context">${m.change[i]}</div></article>`).join('')}else{$$('#monitorMetrics .an-metric-value').forEach((el,i)=>tweenValue(el,m.counts[i]));$$('#monitorMetrics .an-metric').forEach((el,i)=>{el.querySelector('.an-metric-context').textContent=m.change[i];el.classList.remove('an-updating');void el.offsetWidth;el.classList.add('an-updating')})}
+ $('#monitorRows').innerHTML=m.ids.map((id,i)=>{let r=records.find(x=>x.id===id);return `<tr tabindex="0" data-record="${esc(r.id)}"><td><div class="primary-cell">${esc(r.name)}</div><div class="secondary-cell">${esc(r.id)}</div></td><td><span class="an-status ${statusCls(r.status)}">${statusName(r.status)}</span></td><td>${i===0?'↑ 需关注':i===1?'— 持续观察':'↓ 情况改善'}</td><td>${esc(r.owner)}</td><td><button class="an-row-action" data-detail="${esc(r.id)}">查看 →</button></td></tr>`}).join('')}
+function downloadCSV(rows){const csv='\ufeff'+[ ['编号','任务名称','负责人','日期','状态'],...rows.map(r=>[r.id,r.name,r.owner,r.date,statusName(r.status)]) ].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='apple-native-demo.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);toast('已导出当前演示数据')}
+$$('[data-page]').forEach(b=>b.addEventListener('click',()=>selectPage(b.dataset.page)));
+$('#collapse').addEventListener('click',toggleSidebar);$('#sidebarShade').addEventListener('click',()=>$('#app').classList.remove('mobile-open'));
+$$('#overviewSegment [data-mode]').forEach(b=>b.addEventListener('click',()=>{state.mode=b.dataset.mode;$$('#overviewSegment [data-mode]').forEach(x=>{let yes=x===b;x.classList.toggle('active',yes);x.setAttribute('aria-selected',yes?'true':'false')});state.chartIndex=5;placeSegment();drawChart();const base=state.mode==='month'?[1800,74,425,1301]:[1526,48,312,1166];$$('#overviewMetrics [data-value]').forEach((el,i)=>tweenValue(el,base[i]))}));
+$('#overviewPeriod').addEventListener('change',()=>{drawChart();toast('已切换演示统计范围')});
+$('#chartArea').addEventListener('mousemove',chartHover);$('#chartArea').addEventListener('mouseleave',()=>$('#chartTooltip').classList.remove('show'));$('#chartArea').addEventListener('keydown',chartKey);$('#chartArea').addEventListener('focus',()=>{drawChart();$('#chartTooltip').classList.add('show')});$('#chartArea').addEventListener('blur',()=>$('#chartTooltip').classList.remove('show'));
+$('#recordSearch').addEventListener('input',renderRecords);$('#recordFilter').addEventListener('change',renderRecords);$('#resetFilter').addEventListener('click',()=>{$('#recordSearch').value='';$('#recordFilter').value='all';renderRecords()});
+$('#monitorMonth').addEventListener('change',renderMonitor);
+$('#moreBtn').addEventListener('click',e=>{e.stopPropagation();const show=!$('#moreMenu').classList.contains('show');$('#moreMenu').classList.toggle('show',show);$('#moreBtn').setAttribute('aria-expanded',String(show))});
+$$('#moreMenu button').forEach(b=>b.addEventListener('click',()=>{toast(b.dataset.demo);closePopover()}));
+document.addEventListener('click',e=>{if(!e.target.closest('#moreBtn,#moreMenu'))closePopover();const detail=e.target.closest('[data-detail]');if(detail){e.stopPropagation();showDrawer(detail.dataset.detail,detail);return}const row=e.target.closest('tr[data-record]');if(row){$$('tr[data-record]').forEach(x=>x.classList.toggle('selected',x===row));showDrawer(row.dataset.record,row)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const menuOpen=$('#moreMenu').classList.contains('show');closePopover();closeDrawer();$('#app').classList.remove('mobile-open');if(menuOpen)$('#moreBtn').focus()}if(e.key==='Tab'&&$('#drawer').classList.contains('show')){const items=[$('#drawerClose')];const pos=items.indexOf(document.activeElement);if(e.shiftKey&&pos===0){e.preventDefault();items[items.length-1].focus()}else if(!e.shiftKey&&pos===items.length-1){e.preventDefault();items[0].focus()}}const active=document.activeElement;if(active?.matches('tr[data-record]')&&['ArrowDown','ArrowUp','Enter'].includes(e.key)){e.preventDefault();if(e.key==='Enter'){showDrawer(active.dataset.record,active);return}let rows=$$('tr[data-record]').filter(x=>x.offsetParent!==null);let i=rows.indexOf(active),next=rows[Math.max(0,Math.min(rows.length-1,i+(e.key==='ArrowDown'?1:-1)))];if(next)next.focus()}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();selectPage('records');$('#recordSearch').focus()}});
+$('#drawerClose').addEventListener('click',closeDrawer);$('#drawerScrim').addEventListener('click',closeDrawer);
+$('#globalSearch').addEventListener('click',()=>{selectPage('records');$('#recordSearch').focus()});
+$('#allRecords').addEventListener('click',()=>selectPage('records'));
+['overviewExport','recordsExport','monitorExport'].forEach(id=>$('#'+id).addEventListener('click',()=>downloadCSV(id==='recordsExport'?filtered():records)));
+['newRecord','addRecord','settingsDemo'].forEach(id=>$('#'+id).addEventListener('click',()=>toast('此操作为演示占位，可接入真实业务')));
+window.addEventListener('resize',()=>{if(state.page==='overview'){placeSegment();drawChart()}});
+renderOverviewRows();renderRecords();renderMonitor();drawChart();requestAnimationFrame(placeSegment);
+})();
+</script>
+</body>
+</html>

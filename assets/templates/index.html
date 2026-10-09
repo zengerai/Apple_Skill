@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+ <title>Apple Native Web SaaS · 通用设计示例</title>
+ <link rel="stylesheet" href="../styles/apple-native.css">
+</head>
+<body>
+<div class="an-app" id="app">
+ <aside class="an-sidebar" id="sidebar" aria-label="应用导航">
+  <div class="an-brand"><div class="an-brand-mark" aria-hidden="true">A</div><div class="an-brand-text"><div class="an-brand-name">Atlas Workspace</div><div class="an-brand-sub">Apple-inspired SaaS UI</div></div></div>
+  <div class="an-sidebar-content">
+   <div class="an-nav-group"><div class="an-nav-heading">工作区</div>
+    <button class="an-nav-link active" data-page="overview" title="工作台"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>工作台</span></button>
+    <button class="an-nav-link" data-page="records" title="任务列表"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><span>任务列表</span></button>
+    <button class="an-nav-link" data-page="monitor" title="进度追踪"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M2 13h4l3-7 5 12 3-5h5"/></svg><span>进度追踪</span></button>
+   </div>
+   <div class="an-nav-group"><div class="an-nav-heading">管理</div><button class="an-nav-link" id="settingsDemo" title="偏好设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.4-6.4-2.1 2.1m-8.6 8.6-2.1 2.1m12.8 0-2.1-2.1M7.7 7.7 5.6 5.6"/><circle cx="12" cy="12" r="4"/></svg><span>偏好设置</span></button></div>
+  </div>
+  <div class="an-account"><div class="an-account-badge">AT</div><div class="an-account-copy"><div class="an-account-name">演示账号</div><div class="an-account-role">设计样板 · 本地演示</div></div></div>
+ </aside>
+ <button class="an-sidebar-shade" id="sidebarShade" aria-label="关闭导航"></button>
+ <div class="an-main">
+  <div class="an-toolbar">
+   <button class="an-icon-btn" id="collapse" aria-label="展开或折叠侧边栏" title="展开或折叠侧边栏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
+   <div class="an-toolbar-title" id="toolbarTitle">▦ &nbsp;工作台</div><div class="an-toolbar-spacer"></div>
+   <button class="an-toolbar-search" id="globalSearch"><span>⌕ &nbsp;搜索项目和任务</span><kbd class="an-kbd">⌘ K</kbd></button>
+   <div style="position:relative"><button class="an-icon-btn" id="moreBtn" aria-label="更多操作" aria-expanded="false" aria-controls="moreMenu"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button><div id="moreMenu" class="an-popover" role="menu"><button type="button" role="menuitem" data-demo="查看帮助">使用帮助</button><button type="button" role="menuitem" data-demo="已复制链接">复制示例链接</button><button type="button" role="menuitem" data-demo="已打开外观设置">外观设置</button></div></div>
+  </div>
+  <main class="an-content" id="scrollArea">
+   <section class="an-content-inner" data-layout="overview" id="page-overview">
+    <header class="an-page-heading"><div><div class="an-eyebrow">工作区 · 数据概览</div><h1>工作台</h1><p>聚焦正在发生的变化，快速定位需要处理的事项。</p></div><div class="an-actions"><button class="an-btn" id="overviewExport">导出概览</button><button class="an-btn primary" id="newRecord">＋ 新建任务</button></div></header>
+    <div class="an-overview-tools"><div class="an-segment" id="overviewSegment" role="tablist" aria-label="查看范围"><span class="an-segment-thumb" aria-hidden="true"></span><button class="active" data-mode="week" role="tab" aria-selected="true">本周概览</button><button data-mode="month" role="tab" aria-selected="false">本月概览</button></div><label class="an-muted">统计范围 &nbsp;<select class="an-filter-select" id="overviewPeriod"><option>2026 年 9 月</option><option>2026 年 8 月</option><option>2026 年 7 月</option></select></label></div>
+    <div class="an-metrics" id="overviewMetrics"><article class="an-metric"><div class="an-metric-label">累计项目数 <span>▦</span></div><div class="an-metric-value" data-value="1526">1,526</div><div class="an-metric-context">较上期 <span style="color:#23936b">↑ 12.6%</span></div></article><article class="an-metric"><div class="an-metric-label">待关注事项 <span>△</span></div><div class="an-metric-value" style="color:var(--an-red)" data-value="48">48</div><div class="an-metric-context">需优先处理</div></article><article class="an-metric"><div class="an-metric-label">进行中 <span>⌁</span></div><div class="an-metric-value" style="color:#b5853d" data-value="312">312</div><div class="an-metric-context">按期推进</div></article><article class="an-metric"><div class="an-metric-label">已完成 <span>⌁</span></div><div class="an-metric-value" style="color:#387ab7" data-value="1166">1,166</div><div class="an-metric-context">持续交付</div></article></div>
+    <div class="an-analytics">
+     <section class="an-panel an-panel-pad"><div class="an-section-heading"><div><h2>活动趋势</h2><p>新增任务与已完成任务 · 最近六期</p></div><div class="an-chart-legend"><span><i class="an-dot" style="background:#e05e59"></i>新增</span><span><i class="an-dot" style="background:#dca149"></i>完成</span></div></div><div class="an-chart" id="chartArea" tabindex="0" role="img" aria-label="近六期新增与完成任务趋势，可左右方向键查看各期数值"><svg viewBox="0 0 680 255" preserveAspectRatio="none" aria-hidden="true"><g id="chartGrid"></g><path id="chartLineA" stroke="#e05e59" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><path id="chartLineB" stroke="#dca149" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><g id="chartPoints"></g></svg><div class="an-chart-tooltip" id="chartTooltip" role="status"></div></div><div class="an-muted">演示曲线 · 使用稳定的本地模拟数据</div></section>
+     <section class="an-panel an-panel-pad"><div class="an-section-heading"><div><h2>项目状态分布</h2><p>2026 年 9 月 · 最新统计快照</p></div></div><div class="an-distribution-total">1,526</div><div class="an-distribution-bar"><span style="width:3.1%;background:var(--an-red)"></span><span style="width:20.4%;background:var(--an-amber)"></span><span style="width:28.2%;background:var(--an-soft-blue)"></span><span style="width:48.3%;background:var(--an-gray)"></span></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-red)"></i>待关注</span><b>48</b><em>3.1%</em></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-amber)"></i>进行中</span><b>312</b><em>20.4%</em></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-soft-blue)"></i>待确认</span><b>430</b><em>28.2%</em></div><div class="an-distribution-row"><span><i class="an-dot" style="background:var(--an-gray)"></i>已归档</span><b>736</b><em>48.3%</em></div><div class="an-muted" style="border-top:1px solid var(--an-line);padding-top:12px;margin-top:15px">全量快照示例；字段与统计可根据目标业务替换。</div></section>
+    </div>
+    <section class="an-panel"><div class="an-panel-toolbar"><div><div class="an-section-heading" style="margin:0"><div><h2>近期需处理事项</h2><p>选择一条记录打开详情</p></div></div></div><button class="an-btn ghost" id="allRecords">查看全部 →</button></div><div class="an-table-scroll"><table class="an-table"><thead><tr><th style="width:58px">序号</th><th>任务 / 项目</th><th>负责人</th><th>优先级</th><th>操作</th></tr></thead><tbody id="overviewRows"></tbody></table></div><div class="an-panel-footer"><span>数据均为演示数据</span><span>共 4 条近期事项</span></div></section>
+   </section>
+   <section class="an-content-inner" data-layout="data" id="page-records" hidden>
+    <header class="an-page-heading"><div><div class="an-eyebrow">工作区 · 任务管理</div><h1>任务列表</h1><p>集中检索、筛选和处理任务，保留高效的数据表格布局。</p></div><div class="an-actions"><button class="an-btn" id="recordsExport">导出列表</button><button class="an-btn primary" id="addRecord">＋ 新建任务</button></div></header>
+    <div class="an-filterbar"><input id="recordSearch" placeholder="搜索任务名称或负责人" aria-label="搜索任务名称或负责人"><select class="an-filter-select" id="recordFilter" aria-label="筛选任务状态"><option value="all">全部状态</option><option value="关注">待关注</option><option value="进行">进行中</option><option value="完成">已完成</option></select><button class="an-btn" id="resetFilter">重置筛选</button></div>
+    <section class="an-panel"><div class="an-panel-toolbar"><div class="an-section-heading" style="margin:0"><div><h2>任务记录</h2><p>Hover、选中态、键盘操作及详情抽屉示例</p></div></div><span class="an-muted" id="recordCount">共 0 条</span></div><div class="an-table-scroll"><table class="an-table"><thead><tr><th>任务名称</th><th>负责人</th><th>更新日期</th><th>状态</th><th>操作</th></tr></thead><tbody id="recordRows"></tbody></table></div><div class="an-panel-footer"><span>上下方向键切换行，Enter 查看详情</span><span>通用演示数据</span></div></section>
+   </section>
+   <section class="an-content-inner" data-layout="data" id="page-monitor" hidden>
+    <header class="an-page-heading"><div><div class="an-eyebrow">工作区 · 运行情况</div><h1>进度追踪</h1><p>从任务变化出发，快速定位当前需要关注的任务。</p></div><div class="an-actions"><label class="an-muted">统计月份 &nbsp;<select class="an-filter-select" id="monitorMonth"><option value="9">2026 年 9 月</option><option value="8">2026 年 8 月</option><option value="7">2026 年 7 月</option></select></label><button class="an-btn" id="monitorExport">导出结果</button></div></header>
+    <div class="an-metrics" id="monitorMetrics"></div><section class="an-panel"><div class="an-panel-toolbar"><div class="an-section-heading" style="margin:0"><div><h2>本月重点事项</h2><p>月份切换后局部更新，不重载整页</p></div></div><span class="an-muted">筛选结果为当前月份</span></div><div class="an-table-scroll"><table class="an-table"><thead><tr><th>事项</th><th>当前状态</th><th>较上期变化</th><th>负责人</th><th>操作</th></tr></thead><tbody id="monitorRows"></tbody></table></div></section>
+   </section>
+  </main>
+ </div>
+</div>
+<div class="an-scrim" id="drawerScrim"></div><aside class="an-drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true"><div class="an-drawer-header"><span id="drawerTitle">详情</span><button class="an-icon-btn" id="drawerClose" aria-label="关闭详情">×</button></div><div class="an-drawer-body" id="drawerBody"></div></aside>
+<div class="an-toast" id="toast" role="status" aria-live="polite"></div>
+<script src="../scripts/demo.js"></script>
+</body>
+</html>
