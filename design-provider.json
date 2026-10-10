@@ -1,0 +1,52 @@
+{
+  "contract_version": "1.0",
+  "provider_id": "apple-inspired-desktop-saas",
+  "display_name": "Apple-inspired Web Design Provider",
+  "entry": "SKILL.md",
+  "design_families": [
+    "apple-inspired",
+    "macos-inspired-web",
+    "shadcn-luma",
+    "shadcn-rhea"
+  ],
+  "capabilities": [
+    "visual-spec",
+    "component-mapping",
+    "tokens",
+    "themes",
+    "motion",
+    "style-audit",
+    "implementation",
+    "style-candidate"
+  ],
+  "surfaces": [
+    "desktop-web",
+    "responsive-web"
+  ],
+  "framework_support": [
+    {
+      "name": "react",
+      "level": "native",
+      "notes": "shadcn Luma/Rhea via official installation; motion/react when authorized"
+    },
+    {
+      "name": "vue",
+      "level": "guidance",
+      "notes": "Do not drop React shadcn components into Vue; use existing Vue equivalents"
+    },
+    {
+      "name": "vanilla",
+      "level": "adapted",
+      "notes": "CSS/Web Animations for basic effects, no shadcn React components"
+    }
+  ],
+  "dependencies": {
+    "optional_libraries": [
+      "React",
+      "Tailwind CSS",
+      "official shadcn/ui components",
+      "Motion (motion)",
+      "existing Base UI or Radix primitives"
+    ]
+  }
+}

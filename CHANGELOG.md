@@ -1,11 +1,13 @@
 # Changelog
 
-## v2.0.0 — Design System Edition
+## 3.0.0 — 2026-10-10
 
-- Reorganized original domain-neutral v1 Skill into progressive, task-oriented foundations, components, patterns, interaction, themes, integrations and quality references.
-- Added DTCG 2025.10 style `$type`/`$value` hierarchical primitive/semantic/component tokens, light/dark semantic themes and compact/comfortable density.
-- Added independently testable token compiler and CSS theme variables.
-- Formalized standalone create/refine/redesign/audit workflows and non-orchestrating `provider` contract with product-ui v2.4+.
-- Added component state matrix, layout decision tree, keyboard/focus, motion cancellation and QA/visual regression guidance.
-- Added framework-agnostic, original interactive component gallery and preserved generic v1 examples as optional references.
-- No banking, risk monitoring or other previous business-domain source or screenshots included.
+- Rebuilt as a **standalone/Provider** specialist under product-ui Design Provider Protocol v1.
+- Replaced fixed V4 design tokens, hardcoded blue/gray layout, old self-contained CSS component framework and duplicated product-ui workflow with official shadcn Luma/Rhea selection, stack-aware component mapping, Apple HIG and Motion patterns.
+- Added capability manifest, four read-only/implementation mode handoff examples, 16-pattern React+Motion gallery, two product scenarios, package validator, QA docs and EVALS.
+- No upstream proprietary Apple assets or restricted third-party component bundles redistributed.
+- The old v2.0 tree remains on the archive/apple-skill-v2.0-20261010 Git branch.
+
+## 2.0.0
+
+See Git history and the v2.0 archive branch for previous implementation.

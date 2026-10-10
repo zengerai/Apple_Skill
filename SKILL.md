@@ -1,56 +1,51 @@
 ---
 name: apple-inspired-desktop-saas
-description: Independent, domain-neutral Apple-inspired desktop Web UI design system for Codex. Use when asked for 苹果风, macOS-like productivity UI, refined desktop SaaS, a native-feeling Web app, consistent design tokens/components/motion/themes, or review of this visual style. Standalone design/implementation/audit modes or provider mode under product-ui. Not an Apple official framework and not a banking/dashboard template.
+description: Apple-inspired visual and motion Design Provider for product-ui v3.0 or focused standalone UI tasks. Uses official shadcn Luma/Rhea as optional React visual presets, Apple HIG as design guidance, and Motion for interactive behavior. Does not define product IA, business workflows, or approval gates.
 ---
 
-# Apple-inspired Desktop SaaS · v2.0
+# Apple Design Provider v3.0
 
-This Skill supplies a **visual and interaction system** for any product, not a page template and not a business model. Follow the user's product requirements. Output browser-native Web UI: **no fake Mac traffic lights, Dock, desktop wallpaper or nested fake browser window**. Prefer a polished, layered, legible application shell, tasteful depth and efficient work surfaces over flat admin boilerplate or aggressive glass effects.
+This independent Skill supplies **visual-system and presentational-interaction expertise**, not an application template or a second product-ui orchestrator. Compatible with product-ui's written Design Provider Protocol v1. It is not affiliated with Apple, and does not bundle Apple fonts, icons, branding, or upstream components.
 
-## Choose operating mode FIRST
+## Mandatory activation
 
-- `standalone-create`: new UI. Inspect product/user/tasks, choose page pattern, use design system, demonstrate one representative real page, request user approval before scaling **unless user requests one-shot**.
-- `standalone-refine`: existing UI, preserve routes, APIs and workflows. When requested change is broad/ambiguous, audit first and agree scope; a small explicit change can be implemented directly.
-- `standalone-redesign`: explicitly authorized visual overhaul; preserve behavioral contracts and before/after comparison.
-- `standalone-audit`: read-only P0/P1/P2 findings, with file/screen evidence; make no edits.
-- `provider`: only when called by an orchestrator such as `product-ui`. Supply styling, tokens, components, motion recommendations, code and a style-conformance report. **Do not repeat project routing, A/B/C exploration, approval gates, production expansion, or external Skill orchestration**. `product-ui` owns these.
+- Under product-ui: accept one of `style-candidate`, `spec`, `implement`, or `style-audit`. Read `references/provider-protocol.md` and honor the exact handoff scope. product-ui owns the four project lifecycle routes, task IA, feature behavior, A/B/C user choice, checkpoints, DESIGN.md, third-party Skill dispatch and whole-product QA.
+- Standalone: support a **bounded** Apple-inspired visual spec, component/motion implementation, or read-only style review. Inspect requested files/tech stack and do the task directly; **do not invent product roadmap, auto-expand to other pages or create an entire product-ui workflow**.
+- Do not mistake a linked repository or a manifest for installed Skills. When a provider/third-party Skill is unavailable, say so and use an accurately described fallback.
 
-When the user's invocation already fixes the visual direction to Apple-inspired, **do not independently offer unrelated design styles**. Never assert another Skill was executed unless its installed original guidance was read and followed.
+## Safe operation matrix
 
-## Required sequence (proportional to task)
+| Mode | Project file changes | Output |
+|---|---|---|
+| `style-candidate` | NONE | visual direction candidate, distinguishing component states, UI preview guidance for product-ui A/B/C |
+| `spec` | NONE | style selection, tokens/theme contract, component mapping, motion, accessibility, stack compatibility |
+| `implement` | Only explicitly authorized project paths after product-ui's stage permits edits | real component/visual/motion code plus evidence |
+| `style-audit` | NONE | concrete Apple-style discrepancies and actionable, grounded findings |
 
-1. **Inspect**: user task, existing visual conventions, platform, information density, framework, component library, current `PRODUCT.md` / `DESIGN.md` if present. Don't infer missing business rules. Respect existing accepted design unless the user explicitly requests a reset.
-2. **Select pattern** using `patterns/layout-decision-tree.md`; choose list/workbench/editor/form/settings/overview as appropriate. Do **not** default to KPI cards and charts.
-3. **Apply foundations**: read `foundations/design-principles.md`, `foundations/tokens-and-themes.md`; inspect `tokens/light.tokens.json`, `tokens/dark.tokens.json`, `tokens/density.tokens.json`, and generated `assets/styles/design-tokens.css`. Load other foundation files only as needed.
-4. **Choose components**: use `components/catalog.md` then load specialized references. Prefer native controls and existing tested headless components for accessible behavior; preserve project's framework. Avoid custom ARIA keyboard logic without testing.
-5. **Design states and behavior**: `interaction/interaction-contracts.md`, `interaction/motion-system.md`, and `interaction/keyboard-accessibility.md`; include default, hover, focus, busy, empty, error, and success as relevant.
-6. **Produce real UI**: implement a representative page/flow with realistic **new-project** content; render actual browser DOM; use bundled `examples/component-gallery/` for neutral visual reference, not a business starting point. Stop for visual approval in standalone mode if cost of expansion is material.
-7. **Verify** using `quality/acceptance.md`, `quality/visual-regression.md` and `scripts/validate_package.py` and optional `scripts/browser_smoke.py`. Report what was truly tested; don't invent screenshots, audits or success.
+No project source mutation in the three read-only modes. Creating an informational response/plan is not modifying project files. Do not call Hallmark, Impeccable, UI UX Pro Max or the shadcn **agent Skill**; product-ui handles external Skill orchestration. No automatic framework/library migration, auto-installation or vendor asset redistribution.
 
-## Layer rules (source of truth)
+## Execution flow (proportional; load only relevant references)
 
-- Explicit user request / actual product tasks and safety > approved project `DESIGN.md` > project component conventions > these Skill defaults > optional external reviews.
-- In **provider mode**, `product-ui` is the orchestrator. Use `integrations/product-ui-provider.md` input/output contract. The accepted project's single `DESIGN.md` records the adopted provider and allowed overrides. Do not create competing active design specifications.
-- Visual syntax: crisp typography, quiet neutral backdrop, blue selection/action accents by default, translucent *where supported* sidebar, restrained shadows and separators, perceptible focus and state changes. Light and Dark use semantic tokens; compact/comfortable use density tokens.
-- Behavioral syntax: actions have feedback; menus/sheets/dialogs have semantic accessibility and focus lifecycle; motion is meaningful, interruptible, and reduced on preference; content width follows job type and available CSS viewport.
+1. **Validate handoff**: mode, original product-ui-approved visual intent, user tasks, layout regions, app/component stack, accepted DESIGN.md, permission `change_scope` and deliverables. On ambiguity preserve existing behavior/design rather than guessing. In standalone mode define the same essentials only as needed.
+2. **Choose visual base**: read `references/style-selection.md` and `references/apple-principles.md`. React new project: evaluate **official shadcn Luma and Rhea** via official generator; do not assume either is always default. Already-established apps: preserve actual components and accepted DESIGN.md; recommend a style migration only when explicitly authorized.
+3. **Map components and themes**: read `references/component-mapping.md`, `references/theme-adaptation.md` and `references/framework-compatibility.md` when relevant. Build onto the existing primitive/framework. Never hardcode the old V4 sidebar, blue/gray palette, radius or design-token values.
+4. **Map interaction to motion**: read `motion/foundations.md` plus only relevant items in `motion/patterns.md`. For complex layout, exit or shared element animation prefer `motion/react`; simple feedback can use CSS. Each important animation must specify trigger, final state, interruption, reduced-motion and focus behavior. DO NOT delay business state to await animation.
+5. **Deliver or implement**: `spec` returns a written design handoff; `implement` changes only permitted files and prefers original shadcn components installed in the target app. Demo source in `examples/` illustrates integration but is **not** a vendored copy of official Luma/Rhea.
+6. **Verify honestly**: check `quality/style-audit.md`, `quality/motion-qa.md`. Report actual framework/library versions, renders, tests, reduced-motion/rapid input results and limitations. Use `scripts/validate.py` for package integrity; no fabricated browser runs.
 
-## Reference routing (do not load everything upfront)
+## Source of truth
 
-| Trigger | Read |
+Current explicit user request, product/domain correctness, accepted project DESIGN.md (except explicit approved redesign), product-ui task IA & accessibility > this provider's visual proposal > library presets > optional inspiration. Provider outputs are candidates until product-ui records accepted choices in the **single project DESIGN.md**.
+
+## Useful routes
+
+| Work | Load |
 |---|---|
-| Design principle, type, color, depth, icon | `foundations/design-principles.md`, `foundations/typography.md`, `foundations/color-materials.md`, `foundations/iconography.md` |
-| Token source, light/dark, density, adaptation | `foundations/tokens-and-themes.md`, `themes/theme-implementation.md`, `tokens/` |
-| Screen layout, tables or editor split | `patterns/layout-decision-tree.md`, `patterns/application-shell.md`, `patterns/responsive-adaptation.md` |
-| Buttons, form, table, overlays, complex | `components/catalog.md`, `components/controls-forms.md`, `components/data-display.md`, `components/overlays-advanced.md` |
-| Motion/keyboard/loading | `interaction/motion-system.md`, `interaction/interaction-contracts.md`, `interaction/keyboard-accessibility.md` |
-| React/Vue/shadcn integrations | `integrations/framework-adoption.md`, `integrations/external-projects.md` |
-| product-ui delegation | `integrations/product-ui-provider.md` |
-| Quality and verification | `quality/acceptance.md`, `quality/visual-regression.md`, `quality/anti-template.md` |
+| Provider schema / modes / handoff examples | `references/provider-protocol.md` |
+| Apple guidance and styles | `references/apple-principles.md`, `references/style-selection.md` |
+| Components, themes, frameworks | `references/component-mapping.md`, `references/theme-adaptation.md`, `references/framework-compatibility.md` |
+| Motion design / 16 runnable demonstrations | `motion/foundations.md`, `motion/patterns.md`, `examples/motion-gallery/` |
+| Legal reuse and actual upstream URLs | `references/upstream-sources.md` |
+| Style QA / motion QA | `quality/style-audit.md`, `quality/motion-qa.md` |
 
-## Deliverables
-
-- Standalone build/refine: requested UI + short record of page pattern, adopted tokens, interaction states, tested viewports and uncovered limitations.
-- Standalone audit: read-only P0/P1/P2 report with evidence and suggested contained fixes.
-- Provider: structured design decisions + token/component/motion specification, implementation or patch if requested, **style conformance** and unresolved accessibility/QA notes. Return control to orchestrator.
-
-Not official Apple UI assets; do not redistribute Apple fonts or copy Apple branding. Do not copy bundled neutral example fields into a new project.
+The standalone React + Motion gallery includes 16 individually interactive patterns plus two product-oriented example views. It uses **demo-only neutral styling**; for official Luma/Rhea visual fidelity, install the chosen original shadcn style in the target application, do not copy demo CSS as an official preset.
