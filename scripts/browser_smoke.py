@@ -1,52 +1,51 @@
 #!/usr/bin/env python3
-"""Optional real-browser smoke test (Playwright installed separately).
-Uses the fully inlined gallery so localhost/file:// restrictions are irrelevant.
-"""
-from pathlib import Path
-from shutil import which
-ROOT=Path(__file__).resolve().parents[1]
-try:
- from playwright.sync_api import sync_playwright
-except ImportError:
- raise SystemExit('Playwright missing. Optional test: pip install playwright && playwright install chromium')
-html=(ROOT/'examples/component-gallery/standalone.html').read_text()
-with sync_playwright() as p:
- browser_binary=which("chromium") or which("google-chrome")
- b=p.chromium.launch(headless=True, executable_path=browser_binary) if browser_binary else p.chromium.launch(headless=True)
- for w in (750,1024,1692,1920,2560):
-  page=b.new_page(viewport={'width':w,'height':900})
-  errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-  page.set_content(html)
-  assert not page.evaluate('document.documentElement.scrollWidth>innerWidth+2')
-  page.locator('[data-page="records"]').click()
-  assert page.locator('#recordRows tr').count()==6
-  page.locator('#searchInput').fill('主题')
-  assert page.locator('#recordRows tr').count()==1
-  page.locator('#clearButton').click()
-  page.locator('#recordRows tr').first.click()
-  assert page.locator('#detailsDrawer').is_visible()
-  page.keyboard.press('Escape')
-  assert page.locator('#detailsDrawer').is_hidden()
-  page.locator('[data-page="settings"]').click()
-  page.locator('#workspaceName').fill('')
-  page.locator('#demoForm button[type=submit]').click()
-  assert page.locator('#nameError').is_visible()
-  page.locator('#showDialog').click()
-  assert page.locator('#confirmDialog').is_visible()
-  page.keyboard.press('Escape')
-  assert page.locator('#confirmDialog').is_hidden()
-  page.locator('#popoverTrigger').click()
-  page.locator('[data-theme-option=dark]').click()
-  assert page.locator('html').get_attribute('data-theme')=='dark'
-  page.locator('#popoverTrigger').click()
-  page.locator('[data-density-option=compact]').click()
-  assert page.locator('html').get_attribute('data-density')=='compact'
-  assert not errors,errors
-  print(f'PASS {w}px: navigation, search, overlays, validation, theme, density, no overflow/JS errors')
-  page.close()
- page=b.new_page(reduced_motion='reduce')
- page.set_content(html)
- d=page.evaluate('getComputedStyle(document.querySelector(".segment-thumb")).transitionDuration')
- assert d in ('1e-05s','0.00001s','0.01ms'),d
- print('PASS prefers-reduced-motion')
- b.close()
+"""Optional real browser smoke tests. Requires running Vite dev server, Playwright and Chromium."""
+import argparse
+from playwright.sync_api import sync_playwright
+
+def run(url):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        for width in (375, 750, 1024, 1440):
+            page = browser.new_page(viewport={"width": width, "height": 900})
+            errors = []
+            page.on("pageerror", lambda exc: errors.append(str(exc)))
+            page.goto(url, wait_until="networkidle")
+            assert page.locator("[data-pattern]").count() == 16, "pattern count"
+            assert not page.evaluate("document.documentElement.scrollWidth > window.innerWidth + 2"), "overflow at %d" % width
+            page.locator('[data-pattern="P01"] button').first.click()
+            assert "1 次" in page.locator('[data-pattern="P01"] output').inner_text()
+            s = page.locator('[data-pattern="P03"] button')
+            for i in range(10):
+                s.nth(i%3).click()
+            assert s.nth(0).get_attribute("aria-pressed") == "true", "last segment selection"
+            page.locator('[data-pattern="P04"] [role=tab]').nth(1).focus()
+            page.keyboard.press("ArrowRight")
+            assert page.locator('[data-pattern="P04"] [role=tab]').nth(2).get_attribute("aria-selected") == "true"
+            page.locator('[data-pattern="P07"] > .demo-body button').first.click()
+            assert page.locator("dialog.dialog").evaluate("(el) => el.open"), "dialog open"
+            page.keyboard.press("Escape")
+            assert not page.locator("dialog.dialog").evaluate("(el) => el.open"), "dialog Escape"
+            page.get_by_role("button",name="紧凑工作台",exact=True).click()
+            assert page.locator(".workbench table tbody tr").count() == 4
+            page.locator(".search-label input").fill("二季度")
+            assert page.locator(".workbench table tbody tr").count() == 1
+            page.get_by_role("button",name="轻量工具",exact=True).click()
+            assert page.locator("input[type=file]").count()==1
+            assert not errors, errors
+            print("PASS browser",width,"px; gallery, rapid segment, tabs, modal, search, utility")
+            page.close()
+        reduced=browser.new_page(reduced_motion="reduce")
+        reduced.goto(url,wait_until="networkidle")
+        assert reduced.locator(".reduced-note").inner_text().find("开启")>=0, "reduced-motion state"
+        reduced.locator('[data-pattern="P02"] input').check()
+        assert reduced.locator('[data-pattern="P02"] input').is_checked()
+        print("PASS reduced-motion interactive controls")
+        reduced.close()
+        browser.close()
+
+if __name__=="__main__":
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--url",default="http://127.0.0.1:5173")
+    args=parser.parse_args()
+    run(args.url)

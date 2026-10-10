@@ -1,0 +1,56 @@
+# Read-only specification after style direction is accepted
+contract_version: "1.0"
+request_id: "apple-spec-02"
+provider_id: apple-inspired-desktop-saas
+mode: spec
+project_route: NEW_BUILD
+visual_intent:
+  family: apple-inspired
+  source: "user-selected style"
+  requested_preset: luma
+product_job:
+  primary_user: "office worker"
+  primary_task: "import files and preview rename"
+  density: comfortable
+surface_blueprint:
+  page_type: single-purpose-utility
+  regions: [upload, options, preview, action]
+  states: [empty, selecting, preview, error]
+environment:
+  framework: react
+  existing_component_library: "shadcn Base UI"
+  targets: [desktop-web, responsive-web]
+design_source: none
+change_scope: read-only
+deliverable: [style-spec, component-mapping, motion-contract]
+constraints:
+  preserve_business_and_API_contracts: true
+---
+# Illustrative result shape (not evidence that a real task ran).
+contract_version: "1.0"
+provider_id: apple-inspired-desktop-saas
+provider_version: "3.0.0"
+mode: spec
+status: skipped-not-needed
+selected_style:
+  family: apple-inspired
+  preset: luma
+design_decisions:
+  tokens_source: "installed original shadcn Luma style"
+  themes: "light/dark if product requires"
+  overrides: []
+component_mapping: [Input, Button, FilePreview]
+motion:
+  patterns: [P01, P14, P15]
+  interruptible: true
+  reduced_motion: "near-instant feedback without transforms"
+artifacts: []
+compatibility:
+  framework: react
+  level: native
+  dependencies_to_approve: []
+checks:
+  style_conformance: not-tested
+  actual_tests: []
+  limitations: ["Specification example, not an actual rendered test"]
+unresolved: []
