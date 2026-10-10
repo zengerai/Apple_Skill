@@ -1,4 +1,0 @@
-interface:
-  display_name: "Apple-inspired Desktop SaaS"
-  short_description: "与行业无关的 macOS 原生感 Web 设计、组件、动效与质量标准"
-  default_prompt: "使用 $apple-inspired-desktop-saas，根据我当前项目的真实业务和技术栈，设计具有 macOS 原生质感的现代极简 Web 前端。先完成一页可运行样板供我确认，不要复制演示数据或擅自改变后端。"
