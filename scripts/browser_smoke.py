@@ -33,7 +33,7 @@ def run(url):
             record.click()
             assert "海汇商贸" in page.locator(".adv-detail").inner_text()
             page.get_by_role("button",name="关闭详情").click()
-            assert page.locator(".adv-detail").count() == 0
+            page.locator(".adv-detail").wait_for(state="detached", timeout=5000)  # wait for AnimatePresence exit
             page.get_by_role("button",name="展开").first.click()
             assert page.get_by_role("button",name="返回").count() == 1
             page.keyboard.press("Escape")
