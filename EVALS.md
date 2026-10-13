@@ -36,3 +36,23 @@ Designed scenarios, NOT a blanket statement that runtime tests passed. Use sourc
 Run `python3 scripts/validate.py` (static consistency), `cd examples/motion-gallery && npm install && npm run build` (React compile), `python3 scripts/browser_smoke.py --url http://127.0.0.1:5173` while Vite is running (browser sample). Report exact passed/failed/skipped results.
 
 Do not describe a source-only static check as a real rendered motion test.
+
+## v3.1 Advanced Patterns
+
+### 29. Master Detail
+Expected: stable record, inspector, filter and focus return.
+
+### 30. Expand In Place
+Expected: same object identity, Escape/back, reduced motion.
+
+### 31. Global Filter + Linked Hover
+Expected: canonical state for KPI/table, aligned semantic time keys, focus alternative.
+
+### 32. Sticky Header
+Expected: scroll-based compact summary, no content occlusion.
+
+### 33. Command Palette
+Expected: Cmd/Ctrl+K, arrow/Enter/Escape, focus return and allowed actions.
+
+### 34. Production boundaries
+Expected: demo-only CSS not official Luma/Rhea; use installed accessible primitives in target app.

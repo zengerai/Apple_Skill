@@ -3,7 +3,7 @@ name: apple-inspired-desktop-saas
 description: Apple-inspired visual and motion Design Provider for product-ui v3.0 or focused standalone UI tasks. Uses official shadcn Luma/Rhea as optional React visual presets, Apple HIG as design guidance, and Motion for interactive behavior. Does not define product IA, business workflows, or approval gates.
 ---
 
-# Apple Design Provider v3.0
+# Apple Design Provider v3.1
 
 This independent Skill supplies **visual-system and presentational-interaction expertise**, not an application template or a second product-ui orchestrator. Compatible with product-ui's written Design Provider Protocol v1. It is not affiliated with Apple, and does not bundle Apple fonts, icons, branding, or upstream components.
 
@@ -48,4 +48,4 @@ Current explicit user request, product/domain correctness, accepted project DESI
 | Legal reuse and actual upstream URLs | `references/upstream-sources.md` |
 | Style QA / motion QA | `quality/style-audit.md`, `quality/motion-qa.md` |
 
-The standalone React + Motion gallery includes 16 individually interactive patterns plus two product-oriented example views. It uses **demo-only neutral styling**; for official Luma/Rhea visual fidelity, install the chosen original shadcn style in the target application, do not copy demo CSS as an official preset.
+The standalone React + Motion gallery includes 16 baseline patterns, five advanced interaction labs and two product-oriented example views. See motion/advanced-patterns.md for state, continuity and keyboard constraints. It uses **demo-only neutral styling**; for official Luma/Rhea visual fidelity, install the chosen original shadcn style in the target application, do not copy demo CSS as an official preset.

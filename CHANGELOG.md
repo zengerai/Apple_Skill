@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0 — 2026-10-13
+
+- Added advanced interaction lab with coherent Master Detail, Expand in Place, Global Filter + Linked Hover, Sticky Compact Header and Command Palette.
+- Maintained 16 original Motion examples, Provider Protocol v1 and source licensing safeguards.
+
 ## 3.0.0 — 2026-10-10
 
 - Rebuilt as a **standalone/Provider** specialist under product-ui Design Provider Protocol v1.

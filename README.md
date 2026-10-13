@@ -4,6 +4,8 @@
 
 `apple-inspired-desktop-saas` 是一套可独立调用、也可作为 [product-ui](https://github.com/zengerai/codex-test) **Design Provider** 使用的 Agent Skill。它帮助 AI 选择合适的苹果风组件体系、统一主题和视觉细节、设计有空间连续性的交互动画，并检查风格实现质量。
 
+**新增高级联动实验室：** [Motion Gallery](examples/motion-gallery/) 增加 Master Detail、Expand in Place、Global Filter + Linked Hover、Sticky Compact Header、⌘K Command Palette。保留原有 16 个基础动效示例。
+
 **核心能力：**Apple HIG 的设计原则 + [shadcn Luma](https://ui.shadcn.com/docs/changelog/2026-03-luma) / [Rhea](https://ui.shadcn.com/docs/changelog/2026-05-rhea) 的视觉体系 + [Motion](https://motion.dev/docs/react) 动效。目标是现代桌面 Web 应用，而不是在浏览器里模拟 Mac 桌面。
 
 > **一句话区别：**`product-ui` 负责决定页面怎么组织、功能怎么用、项目怎么推进；Apple Provider 负责这套页面的苹果式视觉、组件表现和运动细节。

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import AdvancedLab from "./AdvancedLab.jsx";
 import { AnimatePresence, LayoutGroup, Reorder, motion, useReducedMotion } from "motion/react";
 
 /**
@@ -202,11 +203,11 @@ export default function App(){
   const reduced=useReducedMotion();
   return <div className="lab-root" data-theme={theme}>
     <header className="site-header"><div className="brand"><b>◈ Apple Provider</b><span>Motion Pattern Lab · 非官方 shadcn 视觉预设</span></div>
-      <nav aria-label="演示区域"><button aria-current={page==="gallery"?"page":undefined} onClick={()=>setPage("gallery")}>16 动效</button><button aria-current={page==="workbench"?"page":undefined} onClick={()=>setPage("workbench")}>紧凑工作台</button><button aria-current={page==="utility"?"page":undefined} onClick={()=>setPage("utility")}>轻量工具</button></nav>
+      <nav aria-label="演示区域"><button aria-current={page==="gallery"?"page":undefined} onClick={()=>setPage("gallery")}>16 动效</button><button aria-current={page==="advanced"?"page":undefined} onClick={()=>setPage("advanced")}>高级联动</button><button aria-current={page==="workbench"?"page":undefined} onClick={()=>setPage("workbench")}>紧凑工作台</button><button aria-current={page==="utility"?"page":undefined} onClick={()=>setPage("utility")}>轻量工具</button></nav>
       <button className="theme-toggle" onClick={()=>setTheme(t=>t==="light"?"dark":"light")}>主题：{theme==="light"?"Light":"Dark"}</button>
     </header>
-    <main className="main-content"><div className="page-intro"><h1>{page==="gallery"?"可交互 Motion 模式库":page==="workbench"?"桌面工作流示例":"轻量工具示例"}</h1><p>{page==="gallery"?"每个组件都可点击操作，验证键盘、快速切换及减少动态效果。": "示例用于验证布局和组件适配，不代表已经安装官方 Luma / Rhea 样式。"} <span className="reduced-note">系统减少动画：{reduced?"开启":"关闭"}</span></p></div>
-      {page==="gallery"?<div className="gallery-grid">{PATTERNS.map(([id,title,detail,Comp])=><Example key={id} id={id} title={title} detail={detail}><Comp/></Example>)}</div>:
+    <main className="main-content"><div className="page-intro"><h1>{page==="gallery"?"可交互 Motion 模式库":page==="advanced"?"高级联动交互":page==="workbench"?"桌面工作流示例":"轻量工具示例"}</h1><p>{page==="gallery"?"每个组件都可点击操作，验证键盘、快速切换及减少动态效果。": "示例用于验证布局和组件适配，不代表已经安装官方 Luma / Rhea 样式。"} <span className="reduced-note">系统减少动画：{reduced?"开启":"关闭"}</span></p></div>
+      {page==="advanced"?<AdvancedLab/>:page==="gallery"?<div className="gallery-grid">{PATTERNS.map(([id,title,detail,Comp])=><Example key={id} id={id} title={title} detail={detail}><Comp/></Example>)}</div>:
        page==="workbench"?<CompactWorkbench/>:<ProductivityUtility/>}
     </main>
     <footer className="footer">Apple-inspired Provider v3.0 · React + Motion · 由目标项目安装官方 shadcn Luma/Rhea</footer>
