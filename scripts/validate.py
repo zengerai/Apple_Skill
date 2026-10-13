@@ -15,6 +15,8 @@ EXPECTED = [
     "examples/motion-gallery/package.json", "examples/motion-gallery/index.html",
     "examples/motion-gallery/src/main.jsx", "examples/motion-gallery/src/App.jsx",
     "examples/motion-gallery/src/styles.css",
+    "examples/motion-gallery/src/AdvancedLab.jsx", "examples/motion-gallery/src/advanced.css",
+    "motion/advanced-patterns.md",
     "examples/handoffs/style-candidate.yaml", "examples/handoffs/spec.yaml",
     "examples/handoffs/implement.yaml", "examples/handoffs/style-audit.yaml",
 ]
@@ -60,6 +62,10 @@ def run():
         check(re.search(r"\[\""+pid+r"\"\s*,",app) is not None, "gallery missing "+pid)
         check(re.search(r"\|\s*"+pid+r"\s*\|",patterns) is not None, "catalog missing "+pid)
     check(app.count("function ")>=16, "expected real component implementations")
+    check("AdvancedLab" in app and "page===\"advanced\"" in app, "advanced gallery route missing")
+    advanced=(ROOT/"examples/motion-gallery/src/AdvancedLab.jsx").read_text(encoding="utf-8")
+    for marker in ("Master Detail", "Expand in Place", "Global Filter", "Linked Hover", "Sticky Compact Header", "Command Palette"):
+        check(marker in advanced, "missing advanced lab: "+marker)
     for page in ("CompactWorkbench", "ProductivityUtility"):
         check(("function "+page+"(") in app, "missing "+page)
     for name in ALLOWED_MODES:

@@ -26,6 +26,34 @@ def run(url):
             assert page.locator("dialog.dialog").evaluate("(el) => el.open"), "dialog open"
             page.keyboard.press("Escape")
             assert not page.locator("dialog.dialog").evaluate("(el) => el.open"), "dialog Escape"
+            # v3.1 advanced interaction lab — actual rendered browser behavior
+            page.get_by_role("button",name="高级联动",exact=True).click()
+            assert page.locator('[data-testid="advanced-gallery"]').count() == 1
+            record=page.get_by_role("button",name="海汇商贸 · A02")
+            record.click()
+            assert "海汇商贸" in page.locator(".adv-detail").inner_text()
+            page.get_by_role("button",name="关闭详情").click()
+            assert page.locator(".adv-detail").count() == 0
+            page.get_by_role("button",name="展开").first.click()
+            assert page.get_by_role("button",name="返回").count() == 1
+            page.keyboard.press("Escape")
+            assert page.get_by_role("button",name="返回").count() == 0
+            before=page.locator('[data-testid="advanced-total"]').inner_text()
+            page.get_by_label("统计月份").select_option("0")
+            assert page.locator('[data-testid="advanced-total"]').inner_text() != before
+            page.get_by_label("所属机构").select_option("东部")
+            assert page.locator(".adv-table tbody tr").count()==2
+            points=page.locator(".adv-graphs>div").first.locator("button")
+            points.nth(2).focus()
+            assert page.locator(".adv-graphs>div").nth(1).locator("button").nth(2).get_attribute("aria-pressed") == "true"
+            scroll=page.locator(".adv-scroll")
+            scroll.evaluate("(el) => {el.scrollTop=170;el.dispatchEvent(new Event('scroll',{bubbles:true}))}")
+            assert "紧凑" in page.locator(".adv-panel").filter(has_text="Sticky Compact Header").locator("output").inner_text()
+            page.get_by_role("button",name="打开命令 ⌘K").click()
+            assert page.locator(".adv-dialog").evaluate("(d) => d.open")
+            page.get_by_label("搜索命令").fill("企业")
+            page.keyboard.press("Enter")
+            assert not page.locator(".adv-dialog").evaluate("(d) => d.open")
             page.get_by_role("button",name="紧凑工作台",exact=True).click()
             assert page.locator(".workbench table tbody tr").count() == 4
             page.locator(".search-label input").fill("二季度")

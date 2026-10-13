@@ -108,7 +108,7 @@ Luma/Rhea 组件选型、主题和 Motion；先给我一个真实核心页面验
 
 Luma / Rhea 是 **shadcn 官方的 Web 组件风格**，并非 Apple 官方组件库。新 React 项目应通过 [shadcn 官方创建流程](https://ui.shadcn.com/create) 选择并安装；本仓库不打包官方样式源码，也不声称任意 CSS 就能还原官方预设。Vue 和原生 HTML 目前提供不同程度的指导或适配，详见 [框架兼容规则](references/framework-compatibility.md)。
 
-### 动效：16 个可交互模式
+### 动效：16 个基础模式 + 高级联动交互
 
 内置 React + Motion 的 **Motion Gallery**，覆盖按钮、开关、Segmented Control、Tabs、Popover、操作列表、Dialog、Drawer、Sidebar、Split View、共享元素、列表排序、拖放、加载反馈、Toast 和数据更新。
 
