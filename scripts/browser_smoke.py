@@ -53,7 +53,7 @@ def run(url):
             assert page.locator(".adv-dialog").evaluate("(d) => d.open")
             page.get_by_label("搜索命令").fill("企业")
             page.keyboard.press("Enter")
-            assert not page.locator(".adv-dialog").evaluate("(d) => d.open")
+            page.wait_for_function("!document.querySelector(\u0027.adv-dialog\u0027).open")
             page.get_by_role("button",name="紧凑工作台",exact=True).click()
             assert page.locator(".workbench table tbody tr").count() == 4
             page.locator(".search-label input").fill("二季度")
